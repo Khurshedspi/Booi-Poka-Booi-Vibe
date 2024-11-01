@@ -9,6 +9,7 @@ const ListedBooks = () => {
   // data rakhar jonno
   const [readList, setReadList] = useState([]);
   const [wishList, setWishList] = useState([]);
+  const [sort, setSort] = useState([]);
 
   //ideally we will directly get the read book list from the database
 
@@ -33,22 +34,37 @@ const ListedBooks = () => {
     );
     setWishList(wishBookList);
   }, []);
+
+  const handleSort = (sortType) => {
+    setSort(sortType);
+if(sortType ===  'Number of Pages'){
+  const sortedReadList = [...readList].sort((a, b) => a.totalPages - b.totalPages);
+setReadList(sortedReadList);
+}
+
+if(sortType === 'Ratings'){
+  const sortedReadList = [...readList].sort((a, b) => a.rating - b.rating);
+  setReadList(sortedReadList)
+}
+  };
   return (
     <div>
       <h3 className="text-3xl my-8">Listed Books</h3>
       <div className="dropdown">
         <div tabIndex={0} role="button" className="btn m-1">
-          Click
+          {
+          sort ? `Sort By: ${sort}`: "Sort By"
+          }
         </div>
         <ul
           tabIndex={0}
           className="dropdown-content menu bg-base-100 rounded-box z-[1] w-52 p-2 shadow"
         >
-          <li>
-            <a>Item 1</a>
+          <li onClick={()=>handleSort('Ratings')}>
+            <a>Ratings</a>
           </li>
-          <li>
-            <a>Item 2</a>
+          <li onClick={()=>handleSort('Number of Pages')}>
+            <a>Number of Pages</a>
           </li>
         </ul>
       </div>
